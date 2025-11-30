@@ -16,7 +16,8 @@
 #define MULBYINT
 
 // Modular multiplication, c=a*b mod 2p
-void modmul(const spint * a, const spint * b, spint * c)
+__attribute__((always_inline))
+void modmul(const spint * __restrict a, const spint * __restrict b, spint * __restrict c)
 {
         const spint a0 = a[0];
         const spint a1 = a[1];
@@ -39,10 +40,11 @@ void modmul(const spint * a, const spint * b, spint * c)
         dpint t = 0;
         dpint tt;
         spint lo;
-        spint hi;
+        dpint hi;
         spint carry;
         spint s;
-        const spint mask = ((spint) 1 << 29u) - (spint) 1;
+        const spint mask = (spint)0x1fffffff;
+        const dpint wrap = (dpint)0x4c0;
         tt = (dpint) a1 * (dpint) b8;
         tt += (dpint) a2 * (dpint) b7;
         tt += (dpint) a3 * (dpint) b6;
@@ -52,7 +54,7 @@ void modmul(const spint * a, const spint * b, spint * c)
         tt += (dpint) a7 * (dpint) b2;
         tt += (dpint) a8 * (dpint) b1;
         lo = (spint) tt & mask;
-        t += (dpint) lo *(dpint) 0x4c0;
+        t += (dpint) lo * wrap;
         hi = (spint) (tt >> 29u);
         t += (dpint) a0 * (dpint) b0;
         spint v0 = (spint) t & mask;
@@ -65,7 +67,8 @@ void modmul(const spint * a, const spint * b, spint * c)
         tt += (dpint) a7 * (dpint) b3;
         tt += (dpint) a8 * (dpint) b2;
         lo = (spint) tt & mask;
-        t += (dpint) (spint) (lo + hi) * (dpint) 0x4c0;
+        spint sum = (spint) (lo + hi);
+        t += (dpint) sum * wrap;
         hi = (spint) (tt >> 29u);
         t += (dpint) a0 * (dpint) b1;
         t += (dpint) a1 * (dpint) b0;
@@ -78,7 +81,8 @@ void modmul(const spint * a, const spint * b, spint * c)
         tt += (dpint) a7 * (dpint) b4;
         tt += (dpint) a8 * (dpint) b3;
         lo = (spint) tt & mask;
-        t += (dpint) (spint) (lo + hi) * (dpint) 0x4c0;
+        sum = (spint) (lo + hi);
+        t += (dpint) sum * wrap;
         hi = (spint) (tt >> 29u);
         t += (dpint) a0 * (dpint) b2;
         t += (dpint) a1 * (dpint) b1;
@@ -91,7 +95,8 @@ void modmul(const spint * a, const spint * b, spint * c)
         tt += (dpint) a7 * (dpint) b5;
         tt += (dpint) a8 * (dpint) b4;
         lo = (spint) tt & mask;
-        t += (dpint) (spint) (lo + hi) * (dpint) 0x4c0;
+        sum = (spint) (lo + hi);
+        t += (dpint) sum * wrap;
         hi = (spint) (tt >> 29u);
         t += (dpint) a0 * (dpint) b3;
         t += (dpint) a1 * (dpint) b2;
@@ -104,7 +109,8 @@ void modmul(const spint * a, const spint * b, spint * c)
         tt += (dpint) a7 * (dpint) b6;
         tt += (dpint) a8 * (dpint) b5;
         lo = (spint) tt & mask;
-        t += (dpint) (spint) (lo + hi) * (dpint) 0x4c0;
+        sum = (spint) (lo + hi);
+        t += (dpint) sum * wrap;
         hi = (spint) (tt >> 29u);
         t += (dpint) a0 * (dpint) b4;
         t += (dpint) a1 * (dpint) b3;
@@ -117,7 +123,8 @@ void modmul(const spint * a, const spint * b, spint * c)
         tt += (dpint) a7 * (dpint) b7;
         tt += (dpint) a8 * (dpint) b6;
         lo = (spint) tt & mask;
-        t += (dpint) (spint) (lo + hi) * (dpint) 0x4c0;
+        sum = (spint) (lo + hi);
+        t += (dpint) sum * wrap;
         hi = (spint) (tt >> 29u);
         t += (dpint) a0 * (dpint) b5;
         t += (dpint) a1 * (dpint) b4;
@@ -130,7 +137,8 @@ void modmul(const spint * a, const spint * b, spint * c)
         tt = (dpint) a7 * (dpint) b8;
         tt += (dpint) a8 * (dpint) b7;
         lo = (spint) tt & mask;
-        t += (dpint) (spint) (lo + hi) * (dpint) 0x4c0;
+        sum = (spint) (lo + hi);
+        t += (dpint) sum * wrap;
         hi = (spint) (tt >> 29u);
         t += (dpint) a0 * (dpint) b6;
         t += (dpint) a1 * (dpint) b5;
