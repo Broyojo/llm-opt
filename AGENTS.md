@@ -10,6 +10,8 @@ Your task is to optimize the function implemented in `src/yours.c`. The goal is 
 
    IMPORTANT: Your yours.c must not contain any for, while, do-while, or goto statements.
 
+   You may not import or call functions from impl.c into yours.c, the code should be self-contained in yours.c but you can use standard libraries if you wish.
+
 2. **What you may modify**
    - `src/yours.c`
    - The `CFLAGS` variable in `src/run.sh`
