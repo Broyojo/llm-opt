@@ -6,7 +6,7 @@ CC=/usr/bin/clang-20
 MCA=/usr/lib/llvm-20/bin/llvm-mca
 
 #You CAN change the compiler flags
-CFLAGS=""
+CFLAGS="-O3 -ffast-math -pipe -fomit-frame-pointer -fno-asynchronous-unwind-tables -fno-unwind-tables -fno-stack-protector"
 
 
 
